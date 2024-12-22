@@ -96,25 +96,32 @@ export default function Swapper() {
 
     const canSwap = !quoteLoading && account && inputToken && outputToken && amount && fee;
 
-    return <Card className="">
+    return <Card className="border-none shadow-none">
         <CardHeader>
-            <CardTitle>Swap</CardTitle>
+            <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-red-500 bg-clip-text text-transparent">Swap</CardTitle>
         </CardHeader>
-        <CardContent className="">
-            <div className="flex w-[400px] flex-col items-center gap-4">
-                <div className="flex w-full items-center gap-2">
-                    <Input placeholder="0" type="number" onChange={(e) => setAmount(parseFloat(e.target.value || "0"))} className="w-full" /><TokenSelect selectedKey={inputTokenKey} onSelect={setInputTokenKey} />
-                </div>
-                <div className={cn("flex items-center w-full gap-2", quoteLoading && "animate-pulse")}>
-                    <div className="w-full text-slate-600 mx-3 relative h-8">
-                        {quoteLoading ? <div className="flex h-full items-center absolute left-0"><Loader2Icon className="animate-spin w-4 h-4" /></div> :
-                            <div>{outputAmount && outputToken ? toTokens(outputAmount, outputToken.decimals) : 0}</div>
-                        }
+        <CardContent className="pt-0">
+            <div className="flex w-[400px] flex-col items-center gap-6">
+                <div className="flex w-full flex-col gap-2">
+                    <div className="flex w-full items-center gap-2 bg-gray-50/50 p-4 rounded-xl">
+                        <Input placeholder="0" type="number" onChange={(e) => setAmount(parseFloat(e.target.value || "0"))} className="w-full text-lg border-none bg-transparent focus-visible:ring-0" />
+                        <TokenSelect selectedKey={inputTokenKey} onSelect={setInputTokenKey} />
                     </div>
-                    <TokenSelect selectedKey={outputTokenKey} onSelect={setOutputTokenKey} />
+                    <div className={cn("flex items-center w-full gap-2 bg-gray-50/50 p-4 rounded-xl", quoteLoading && "animate-pulse")}>
+                        <div className="w-full text-slate-600 relative h-8">
+                            {quoteLoading ? 
+                                <div className="flex h-full items-center absolute left-0">
+                                    <Loader2Icon className="animate-spin w-4 h-4" />
+                                </div> 
+                                : 
+                                <div className="text-lg">{outputAmount && outputToken ? toTokens(outputAmount, outputToken.decimals) : 0}</div>
+                            }
+                        </div>
+                        <TokenSelect selectedKey={outputTokenKey} onSelect={setOutputTokenKey} />
+                    </div>
                 </div>
             </div>
-            <div className="mt-4 w-full">
+            <div className="mt-6 w-full">
                 {canSwap ? <SwapButton fee={fee} recipient={account.address as Address} tokenIn={inputToken} tokenOut={outputToken} amount={toUnits(amount.toString(), inputToken?.decimals ?? 18)} /> : <></>}
             </div>
         </CardContent>

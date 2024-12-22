@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { ConnectButton as ThirdwebConnectButton, useActiveWalletChain } from "thirdweb/react";
+import { ConnectButton as ThirdwebConnectButton } from "thirdweb/react";
 import { createWallet } from "thirdweb/wallets";
 import client from "@/lib/thirdweb-client";
-import anvil from "@/lib/anvil";
+import { supportedNetworks } from "@/lib/networks";
 
 export default function ConnectButton() {
     const wallets = [
@@ -13,6 +13,12 @@ export default function ConnectButton() {
     ];
 
     return (
-        <ThirdwebConnectButton connectButton={{ className: "w-full" }} theme="light" chain={anvil} client={client} wallets={wallets} />
+        <ThirdwebConnectButton 
+            connectButton={{ className: "w-full" }} 
+            theme="light" 
+            chains={supportedNetworks}
+            client={client} 
+            wallets={wallets} 
+        />
     )
 }
